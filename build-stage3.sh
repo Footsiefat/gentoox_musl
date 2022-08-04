@@ -9,16 +9,16 @@ if [[ ! -f .catalyst-accept-keywords ]]; then
 fi
 
 if [[ ! -f .catalyst-prep-done ]]; then
-  builddate=$(wget --quiet -O - http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64-openrc/ | sed -nr "s/.*href=\"stage3-amd64-openrc-([0-9].*).tar.xz\">.*/\1/p")
-  if [[ ! -f "stage3-amd64-openrc-$builddate.tar.xz" ]]; then
-    wget http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64-openrc/stage3-amd64-openrc-$builddate.tar.xz
+  builddate=$(wget --quiet -O - http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64-musl/ | sed -nr "s/.*href=\"stage3-amd64-musl-([0-9].*).tar.xz\">.*/\1/p")
+  if [[ ! -f "stage3-amd64-musl-$builddate.tar.xz" ]]; then
+    wget http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64-musl/stage3-amd64-musl-$builddate.tar.xz
   fi
 
   (git clone https://github.com/gentoo/releng.git; cd releng; patch -p1 < ../0001-releng-gcc-add-graphite-support.patch)
 
   mkdir -p /var/tmp/catalyst/builds/default
   mkdir -p /var/tmp/catalyst/snapshot_cache/latest
-  cp -v "stage3-amd64-openrc-$builddate.tar.xz" /var/tmp/catalyst/builds/default/stage3-amd64-openrc-latest.tar.xz
+  cp -v "stage3-amd64-musl-$builddate.tar.xz" /var/tmp/catalyst/builds/default/stage3-amd64-musl-latest.tar.xz
   emerge --sync
   catalyst -s latest
   touch .catalyst-prep-done
